@@ -93,7 +93,7 @@ if(isset($_POST['btnphp'])){
     if($ok==true){
         $contenu="Nom du client : $nom \n Prénom du client: $prenom \n Genre: $genre \n Venu de: $pays \n Sujet: $sujet \n Message: $messages";
         $recipient = "jweertzcodes@gmal.com";
-        $mailhead = "Hackers-Poulette Formulaire";
+        $mailhead = "ENSEMBLE ! ";
         $mailheader = "Mail de : $email \r\n";
         mail($recipient, $mailhead, $contenu, $mailheader) or die("Erreur!");
         echo '<script type="text/javascript">window.alert("votre message est bien envoyé ");</script>'; 
@@ -292,7 +292,7 @@ if(isset($_POST['btnphp'])){
                 <div class="form-row">
                     <div class="form-group col-12">
                         <label for="selection pays"></label>
-                        <select name="pays" class="mdb-select md-form" id="selectPays">
+                        <select name="pays" class="browser-default custom-select mb-4" id="selectPays">
                             <option value="" disabled selected><?php echo $pays ?></option>
                             <option value="Belgique">Belgique</option>
                             <option value="France">France</option>
@@ -313,11 +313,11 @@ if(isset($_POST['btnphp'])){
                 <div class="row">
                     <div class="form-group col-10">
                         <label for="zone texte message"></label>
-                        <textarea name="message" class="form-control" id="message" placeholder="Votre message..."
+                        <textarea name="message" class="form-control rounded-0" id="message" placeholder="Votre message..."
                             rows="5"><?php echo $messages ?></textarea>
                     </div>
                 </div>
-                <input name="btnphp" id="run" class="btn btn-secondary" type="submit" value="submit">
+                <input name="btnphp" id="run" class="btn btn-secondary btn-block" type="submit" value="submit">
             </form>
 
         </div>
