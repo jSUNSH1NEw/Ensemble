@@ -1,0 +1,29 @@
+version: '3'
+services:
+    apache:
+        container_name: apache
+        image: php:7.4.2-apache-buster
+        depends_on: 
+            - postgresql
+        ports:
+            - 80:80
+        volumes: 
+            - ./apache/codes:/var/www/html
+
+
+    postgresql:
+            container_name: postgresql
+        database:
+            image: postgres:alpine 
+            environment: 
+                - POSTGRES_PASSWORD=epicpassword
+                - POSTGRES_USER=epicuser
+                - POSTGRES_DB=fablabdb
+            env_file:
+                - database.env
+            volumes:
+                - database-data:/var/lib/postgresql/data/
+            ports: 
+                - 5432:5432
+            volumes: 
+                - ./postgresql:/var/lib/postgresql
