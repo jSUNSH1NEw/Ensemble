@@ -133,4 +133,175 @@ jQuery(document).ready(function( $ ) {
 
 // custom code
 
+
+//here start the quizz
+
+const QUESTIONS = [
+  "Votre plat préféré ?",
+  "Votre style de musique favori ?",
+  "Votre signe astrologique ?",
+  "Votre deuxième prénom ?",
+  "Votre date d'anniversaire ?",
+  "Votre couleur préférée ?",
+  "Votre film préféré",
+  "Votre acteur/actrice préféré(e) ?",
+  "Votre destination de voyage de rêve ?",
+  "Votre passe temps favori ?"
+]
+const RANDOMNUMBER = [];
+const RESPONSES = [];
+const verifResponse= [];
+const questionChoose = [];
+let random = Math.floor(Math.random()*10);
+
+
+//event choix question
+ document.getElementById('choose').addEventListener('click',()=>{
+  let br = document.createElement('br');
+
+  let numberQuestion = document.getElementsByName('numberQuestion');
+  let getStarted = document.getElementById('get-started');
+  getStarted.appendChild(br);
+  let numberChoose = 0;
+  
+  for(let i=0;i<numberQuestion.length;i++){
+    if(numberQuestion[i].checked){
+      numberChoose = numberQuestion[i].value;
+    }
+  }
+  //container for question
+  let div = document.createElement('div');
+  div.id = "container_question";
+  getStarted.appendChild(div);
+
+  for(let i=0; i<numberChoose;i++){
+
+    while(RANDOMNUMBER.includes(random)){
+      random = Math.floor(Math.random()*10);
+    }
+      let label = document.createElement('label');
+      label.innerHTML = QUESTIONS[random];
+      questionChoose.push(QUESTIONS[random]);
+      label.setAttribute('for',`question_${i}`);
+      let input = document.createElement('input');
+      input.id = `question_${i}`;
+      input.setAttribute('class','inputStyle');
+      input.setAttribute('type','text');
+      let br = document.createElement('br');
+      div.appendChild(label);
+      div.appendChild(input);
+      div.appendChild(br);
+      RANDOMNUMBER.push(random);
+  }
+
+  let button = document.createElement('input');
+  button.setAttribute('type','submit');
+  button.setAttribute('value','soumettre');
+  button.id="soumettre";
+  div.appendChild(button);
+  document.getElementById('choose').setAttribute('disabled','disabled');
+
+
+  // le premier joueur rentre les response
+
+  document.getElementById('soumettre').addEventListener('click',()=>{
+
+    //on cache la div précédente
+    
+    document.getElementById('container_question').style.display = "none";
+
+    for(let i=0 ; i<numberChoose; i++){
+      RESPONSES.push(document.getElementById(`question_${i}`).value);
+      document.getElementById(`question_${i}`).value="";
+    }
+
+    function newTableau(tab1,tab2){
+      let ASSOC=[];
+      for(let i=0; i<tab2.length;i++){
+
+        ASSOC[tab1[i]] = tab2[i];
+      }
+      return ASSOC;
+    }
+   
+    const ASSOCIATIF = newTableau(questionChoose,RESPONSES);
+    
+
+    //container response
+    let divResponse = document.createElement('div');
+    divResponse.id = "container_response";
+    getStarted.appendChild(divResponse);
+    let h2 = document.createElement('h2');
+    h2.innerHTML = "seras-tu trouver toutes les réponses ?";
+
+    divResponse.appendChild(h2);
+
+    let regex = /Votre/gi;
+
+    for(let i=0; i<numberChoose;i++){
+      let label = document.createElement('label');
+      let string = questionChoose[i].replace(regex,"Son/Sa");
+      label.innerHTML = string;
+      label.setAttribute('for',`question_0${i}`);
+      let input = document.createElement('input');
+      input.id = `question_0${i}`;
+      input.setAttribute('class','inputStyle');
+      input.setAttribute('type','text');
+      let br = document.createElement('br');
+      divResponse.appendChild(label);
+      divResponse.appendChild(input);
+      divResponse.appendChild(br);
+    }
+    let buttonVal = document.createElement('input');
+    buttonVal.setAttribute('type','submit');
+    buttonVal.setAttribute('value','Valider');
+    buttonVal.id="Validate_response";
+    divResponse.appendChild(buttonVal);
+    
+    //event pour la vérification du deuxième joueur
+
+    document.getElementById('Validate_response').addEventListener('click',()=>{
+
+      let goodResponse = 0;
+      document.getElementById('container_response').style.display = "none";
+      for(let i=0 ; i<numberChoose; i++){
+
+        verifResponse.push(document.getElementById(`question_0${i}`).value);
+      }
+      let congratulation = document.createElement('div');
+      congratulation.id = "congrat";
+      let title = document.createElement('h2');
+      let paragraphe = document.createElement('p');
+      
+      for(let i=0; i< RESPONSES.length;i++){
+        if(RESPONSES[i].toUpperCase()== verifResponse[i].toUpperCase()){
+          goodResponse +=1;
+        }
+      }
+
+      if(goodResponse < numberChoose/2){
+        title.innerHTML = "aie aie aie, c'est pas terrible comme score";
+        paragraphe.innerHTML = `ton score est de ${goodResponse}/${numberChoose}`;
+      }
+      else if(goodResponse == numberChoose/2) {
+        title.innerHTML = "pile la moitié! mais tu peux faire mieux j'en suis sur";
+        paragraphe.innerHTML = `ton score est de ${goodResponse}/${numberChoose}`;
+      }
+      else if((goodResponse>numberChoose/2) && goodResponse< numberChoose){
+        title.innerHTML = "wooow tu connais bien ta moitié on dirait O_0";
+        paragraphe.innerHTML = `ton score est de ${goodResponse}/${numberChoose}`;
+      }
+      else{
+        title.innerHTML = "Score parfait,  incroyable j'en reviens pas !";
+        paragraphe.innerHTML = `ton score est de ${goodResponse}/${numberChoose}`;
+      }
+
+      getStarted.appendChild(congratulation);
+      congratulation.appendChild(title);
+      congratulation.appendChild(paragraphe);
+    })
+})
+})
+
+
 });
